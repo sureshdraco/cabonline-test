@@ -9,9 +9,9 @@ import cabonline.se.test.model.Trip;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
-public class MyApplication extends Application {
+public class TestApplication extends Application {
 
-	private static final String TAG = MyApplication.class.getSimpleName();
+	private static final String TAG = TestApplication.class.getSimpleName();
 
 	@Override
 	public void onCreate() {
@@ -28,7 +28,7 @@ public class MyApplication extends Application {
 			@Override
 			public void execute(Realm realm) {
 				try {
-					InputStream is = MyApplication.this.getResources().openRawResource(R.raw.trip_list);
+					InputStream is = TestApplication.this.getResources().openRawResource(R.raw.trip_list);
 					realm.createAllFromJson(Trip.class, is);
 				} catch (Exception e) {
 					Log.e(TAG, e.toString());
