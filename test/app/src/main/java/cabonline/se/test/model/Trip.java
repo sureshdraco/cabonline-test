@@ -15,31 +15,34 @@
  */
 package cabonline.se.test.model;
 
+import java.util.Date;
+
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 public class Trip extends RealmObject {
 	@PrimaryKey
 	private int id;
-	private String tripTime, amount, paymentType, userId;
-
+	private String amount, paymentType, destination;
+	private Date time;
+	
 	public int getId() {
 		return id;
 	}
-
+	
 	public String getTripTime() {
-		return tripTime;
+		return time == null ? "" : time.toString();
 	}
-
+	
 	public String getAmount() {
 		return amount;
 	}
-
+	
 	public String getPaymentType() {
 		return paymentType;
 	}
-
-	public String getUserId() {
-		return userId;
+	
+	public String getDestination() {
+		return destination;
 	}
 }

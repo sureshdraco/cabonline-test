@@ -1,20 +1,20 @@
 [
   {
     "id": 1,
-    "trip": "Finland",
-    "amount": "100",
+    "price": "100",
+    "destination": "stockholm",
     "date": "10/01/13"
   },
   {
     "id": 2,
-    "trip": "Sweden",
-    "amount": "1000",
+    "destination": "Sweden",
+    "price": "1000",
     "date": "10/01/15"
   },
   {
     "id": 3,
-    "trip": "Norway",
-    "amount": "10",
+    "destination": "Norway",
+    "price": "10",
     "date": "22/12/16"
   }
 ]

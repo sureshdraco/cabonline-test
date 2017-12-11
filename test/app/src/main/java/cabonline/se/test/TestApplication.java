@@ -7,22 +7,26 @@ import java.io.InputStream;
 
 import cabonline.se.test.model.Trip;
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 
 public class TestApplication extends Application {
-
+	
 	private static final String TAG = TestApplication.class.getSimpleName();
-
+	
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		Realm.init(this);
-		RealmConfiguration realmConfig = new RealmConfiguration.Builder().build();
-		Realm.setDefaultConfiguration(realmConfig);
-		Realm.deleteRealm(realmConfig);
-		loadJson();
+//		Realm.init(this);
+//		RealmConfiguration realmConfig = new RealmConfiguration.Builder().build();
+//		Realm.setDefaultConfiguration(realmConfig);
+//		Realm.deleteRealm(realmConfig);
+//		new Handler().postDelayed(new Runnable() {
+//			@Override
+//			public void run() {
+//				loadJson();
+//			}
+//		}, 5000);
 	}
-
+	
 	private void loadJson() {
 		Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
 			@Override
