@@ -11,21 +11,25 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import cabonline.se.test.R;
 import cabonline.se.test.fragment.TripListFragment;
 import cabonline.se.test.fragment.UserSettingsFragment;
+import cabonline.se.test.model.Trip;
+import cabonline.se.test.model.User;
 import cabonline.se.test.service.LoadJsonFilesIntentService;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
 public class MainActivity extends AppCompatActivity
-	implements NavigationView.OnNavigationItemSelectedListener {
+		implements NavigationView.OnNavigationItemSelectedListener {
 	public static final int FRAGMENT_TRIPS = 0;
 	public static final int FRAGMENT_SETTINGS = 1;
-	
+
 	private int currentFragment;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -34,30 +38,48 @@ public class MainActivity extends AppCompatActivity
 		startService(new Intent(getApplicationContext(), LoadJsonFilesIntentService.class));
 		initView();
 	}
-	
+
 	private void initRealm() {
 		Realm.init(this);
 		RealmConfiguration realmConfiguration = new RealmConfiguration.Builder().deleteRealmIfMigrationNeeded().build();
 		Realm.setDefaultConfiguration(realmConfiguration);
 	}
-	
+
 	private void initView() {
-		Toolbar toolbar = findViewById(R.id.toolbar);
+		final Toolbar toolbar = findViewById(R.id.toolbar);
+		toolbar.findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Realm realm = Realm.getDefaultInstance();
+				realm.beginTransaction();
+				switch (currentFragment) {
+					case FRAGMENT_SETTINGS:
+						realm.delete(User.class);
+						break;
+					case FRAGMENT_TRIPS:
+					default:
+						realm.delete(Trip.class);
+						break;
+				}
+				realm.commitTransaction();
+				realm.close();
+			}
+		});
 		setSupportActionBar(toolbar);
 		setupNavigationDrawer(toolbar);
 		showFragment(FRAGMENT_SETTINGS);
 	}
-	
+
 	private void setupNavigationDrawer(Toolbar toolbar) {
 		DrawerLayout drawer = findViewById(R.id.drawer_layout);
 		ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-			this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+				this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 		drawer.addDrawerListener(toggle);
 		toggle.syncState();
 		NavigationView navigationView = findViewById(R.id.nav_view);
 		navigationView.setNavigationItemSelectedListener(this);
 	}
-	
+
 	@Override
 	public void onBackPressed() {
 		DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -67,12 +89,12 @@ public class MainActivity extends AppCompatActivity
 			super.onBackPressed();
 		}
 	}
-	
+
 	@Override
 	public boolean onNavigationItemSelected(MenuItem item) {
 		// Handle navigation view item clicks here.
 		int id = item.getItemId();
-		
+
 		if (id == R.id.profile) {
 			showFragment(FRAGMENT_SETTINGS);
 		} else if (id == R.id.trips) {
@@ -82,7 +104,7 @@ public class MainActivity extends AppCompatActivity
 		drawer.closeDrawer(GravityCompat.START);
 		return true;
 	}
-	
+
 	private void showFragment(int fragmentNo) {
 		currentFragment = fragmentNo;
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -91,10 +113,12 @@ public class MainActivity extends AppCompatActivity
 		switch (fragmentNo) {
 			case FRAGMENT_SETTINGS:
 				fragment = new UserSettingsFragment();
+				((TextView) findViewById(R.id.title)).setText("Profile");
 				break;
 			case FRAGMENT_TRIPS:
 			default:
 				fragment = new TripListFragment();
+				((TextView) findViewById(R.id.title)).setText("Trips");
 				break;
 		}
 		fragment.setArguments(bundle);

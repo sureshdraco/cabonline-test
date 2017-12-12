@@ -19,5 +19,54 @@
     "paymentType": "card",
     "price": "10",
     "time": "2016-11-02T10:52:28+01:00"
+  },
+  {
+    "id": 4,
+    "price": "100",
+    "destination": "Göteborg",
+    "paymentType": "card",
+    "time": "2016-03-01T22:02:28+01:00"
+  },
+  {
+    "id": 5,
+    "destination": "Denmark",
+    "paymentType": "cash",
+    "price": "1000",
+    "time": "2016-08-22T18:18:28+01:00"
+  },
+  {
+    "id": 6,
+    "destination": "Holland",
+    "paymentType": "card",
+    "price": "10",
+    "time": "2016-11-02T10:52:28+01:00"
+  },
+  {
+    "id": 7,
+    "destination": "Amsterdam",
+    "paymentType": "card",
+    "price": "10",
+    "time": "2016-11-02T10:52:28+01:00"
+  },
+  {
+    "id": 8,
+    "price": "100",
+    "destination": "Oslo",
+    "paymentType": "card",
+    "time": "2016-03-01T22:02:28+01:00"
+  },
+  {
+    "id": 9,
+    "destination": "Helsingborg",
+    "paymentType": "cash",
+    "price": "1000",
+    "time": "2016-08-22T18:18:28+01:00"
+  },
+  {
+    "id": 10,
+    "destination": "Blekinge",
+    "paymentType": "card",
+    "price": "10",
+    "time": "2016-11-02T10:52:28+01:00"
   }
 ]
