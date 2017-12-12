@@ -26,11 +26,26 @@ public class Trip extends RealmObject {
 	private String amount, paymentType, destination;
 	private Date time;
 	
+	public Trip() {
+	}
+	
+	public Trip(int id, String amount, String paymentType, String destination, Date time) {
+		this.id = id;
+		this.amount = amount;
+		this.paymentType = paymentType;
+		this.destination = destination;
+		this.time = time;
+	}
+	
 	public int getId() {
 		return id;
 	}
 	
-	public String getTripTime() {
+	public Date getTime() {
+		return time;
+	}
+	
+	public String getDisplayTime() {
 		return time == null ? "" : time.toString();
 	}
 	

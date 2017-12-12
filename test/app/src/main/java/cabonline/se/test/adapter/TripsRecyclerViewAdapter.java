@@ -25,15 +25,12 @@ import android.widget.TextView;
 import cabonline.se.test.R;
 import cabonline.se.test.model.Trip;
 import io.realm.OrderedRealmCollection;
+import io.realm.RealmRecyclerViewAdapter;
 
 public class TripsRecyclerViewAdapter extends RealmRecyclerViewAdapter<Trip, TripsRecyclerViewAdapter.MyViewHolder> {
 	
 	public TripsRecyclerViewAdapter(OrderedRealmCollection<Trip> data) {
 		super(data, true);
-		// Only set this if the model class has a primary key that is also a integer or long.
-		// In that case, {@code getItemId(int)} must also be overridden to return the key.
-		// See https://developer.android.com/reference/android/support/v7/widget/RecyclerView.Adapter.html#hasStableIds()
-		// See https://developer.android.com/reference/android/support/v7/widget/RecyclerView.Adapter.html#getItemId(int)
 		setHasStableIds(true);
 	}
 	
@@ -50,7 +47,7 @@ public class TripsRecyclerViewAdapter extends RealmRecyclerViewAdapter<Trip, Tri
 		holder.data = trip;
 		holder.destination.setText(trip.getDestination());
 		holder.price.setText(trip.getAmount());
-		holder.time.setText(trip.getTripTime());
+		holder.time.setText(trip.getDisplayTime());
 	}
 	
 	@Override

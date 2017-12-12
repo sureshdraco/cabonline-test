@@ -1,12 +1,15 @@
 package cabonline.se.test;
 
 import android.app.Application;
+import android.os.Handler;
 import android.util.Log;
 
 import java.io.InputStream;
 
 import cabonline.se.test.model.Trip;
+import cabonline.se.test.util.Constant;
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 public class TestApplication extends Application {
 	
@@ -15,29 +18,5 @@ public class TestApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-//		Realm.init(this);
-//		RealmConfiguration realmConfig = new RealmConfiguration.Builder().build();
-//		Realm.setDefaultConfiguration(realmConfig);
-//		Realm.deleteRealm(realmConfig);
-//		new Handler().postDelayed(new Runnable() {
-//			@Override
-//			public void run() {
-//				loadJson();
-//			}
-//		}, 5000);
 	}
-	
-	private void loadJson() {
-		Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
-			@Override
-			public void execute(Realm realm) {
-				try {
-					InputStream is = TestApplication.this.getResources().openRawResource(R.raw.trip_list);
-					realm.createAllFromJson(Trip.class, is);
-				} catch (Exception e) {
-					Log.e(TAG, e.toString());
-				}
-			}
-		});
-	}
-} 
+}
