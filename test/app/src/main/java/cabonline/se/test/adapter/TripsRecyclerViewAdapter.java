@@ -46,7 +46,7 @@ public class TripsRecyclerViewAdapter extends RealmRecyclerViewAdapter<Trip, Tri
 		final Trip trip = getItem(position);
 		holder.data = trip;
 		holder.destination.setText(trip.getDestination());
-		holder.price.setText(trip.getAmount());
+		holder.price.setText(trip.getPrice());
 		holder.time.setText(trip.getDisplayTime());
 	}
 	

@@ -3,18 +3,21 @@
     "id": 1,
     "price": "100",
     "destination": "stockholm",
-    "date": "10/01/13"
+    "paymentType": "card",
+    "time": "2016-03-01T22:02:28+01:00"
   },
   {
     "id": 2,
     "destination": "Sweden",
+    "paymentType": "cash",
     "price": "1000",
-    "date": "10/01/15"
+    "time": "2016-08-22T18:18:28+01:00"
   },
   {
     "id": 3,
     "destination": "Norway",
+    "paymentType": "card",
     "price": "10",
-    "date": "22/12/16"
+    "time": "2016-11-02T10:52:28+01:00"
   }
 ]

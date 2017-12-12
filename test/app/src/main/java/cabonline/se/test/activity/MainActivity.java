@@ -2,7 +2,6 @@ package cabonline.se.test.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -15,36 +14,38 @@ import android.view.MenuItem;
 
 import cabonline.se.test.R;
 import cabonline.se.test.fragment.TripListFragment;
+import cabonline.se.test.fragment.UserSettingsFragment;
 import cabonline.se.test.service.LoadJsonFilesIntentService;
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 public class MainActivity extends AppCompatActivity
 	implements NavigationView.OnNavigationItemSelectedListener {
 	public static final int FRAGMENT_TRIPS = 0;
+	public static final int FRAGMENT_SETTINGS = 1;
+	
+	private int currentFragment;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		initRealm();
 		setContentView(R.layout.activity_main);
+		initRealm();
+		startService(new Intent(getApplicationContext(), LoadJsonFilesIntentService.class));
 		initView();
 	}
 	
 	private void initRealm() {
 		Realm.init(this);
-		new Handler().postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				startService(new Intent(getApplicationContext(), LoadJsonFilesIntentService.class));
-			}
-		}, 0);
+		RealmConfiguration realmConfiguration = new RealmConfiguration.Builder().deleteRealmIfMigrationNeeded().build();
+		Realm.setDefaultConfiguration(realmConfiguration);
 	}
 	
 	private void initView() {
 		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		setupNavigationDrawer(toolbar);
-		showFragment(FRAGMENT_TRIPS);
+		showFragment(FRAGMENT_SETTINGS);
 	}
 	
 	private void setupNavigationDrawer(Toolbar toolbar) {
@@ -73,7 +74,7 @@ public class MainActivity extends AppCompatActivity
 		int id = item.getItemId();
 		
 		if (id == R.id.profile) {
-		
+			showFragment(FRAGMENT_SETTINGS);
 		} else if (id == R.id.trips) {
 			showFragment(FRAGMENT_TRIPS);
 		}
@@ -83,10 +84,14 @@ public class MainActivity extends AppCompatActivity
 	}
 	
 	private void showFragment(int fragmentNo) {
+		currentFragment = fragmentNo;
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		Bundle bundle = new Bundle();
 		Fragment fragment;
 		switch (fragmentNo) {
+			case FRAGMENT_SETTINGS:
+				fragment = new UserSettingsFragment();
+				break;
 			case FRAGMENT_TRIPS:
 			default:
 				fragment = new TripListFragment();

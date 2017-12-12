@@ -8,6 +8,7 @@ import java.io.InputStream;
 
 import cabonline.se.test.R;
 import cabonline.se.test.model.Trip;
+import cabonline.se.test.model.User;
 import cabonline.se.test.util.Constant;
 import io.realm.Realm;
 
@@ -23,17 +24,19 @@ public class LoadJsonFilesIntentService extends IntentService {
 	@Override
 	protected void onHandleIntent(Intent intent) {
 		try {
-			sleep(4000);
+			sleep(2000);
 		} catch (InterruptedException e) {
 		}
 		Realm realm = Realm.getDefaultInstance();
 		try {
-			InputStream is = getResources().openRawResource(R.raw.trip_list);
+			InputStream tripIs = getResources().openRawResource(R.raw.trip_list);
+			InputStream userIs = getResources().openRawResource(R.raw.user);
 			realm.beginTransaction();
-			realm.createAllFromJson(Trip.class, is);
+			realm.createOrUpdateAllFromJson(Trip.class, tripIs);
+			realm.createObjectFromJson(User.class, userIs);
 			realm.commitTransaction();
 		} catch (Exception e) {
-			if (Constant.DEBUG) Log.d(TAG, e.toString());
+			if (Constant.DEBUG) Log.e(TAG, e.toString());
 		} finally {
 			realm.close();
 		}

@@ -35,20 +35,25 @@ public class TripListFragment extends Fragment {
 	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		recyclerView = view.findViewById(R.id.tripRecyclerView);
+	}
+	
+	@Override
+	public void onStart() {
+		super.onStart();
 		realm = Realm.getDefaultInstance();
 		setUpRecyclerView();
 	}
 	
 	@Override
-	public void onDestroy() {
-		super.onDestroy();
+	public void onStop() {
+		super.onStop();
 		recyclerView.setAdapter(null);
 		realm.close();
 	}
 	
 	private void setUpRecyclerView() {
 		// find all always returns a list, so no need for null check
-		adapter = new TripsRecyclerViewAdapter(Realm.getDefaultInstance().where(Trip.class).findAll());
+		adapter = new TripsRecyclerViewAdapter(realm.where(Trip.class).findAllAsync());
 		recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 		recyclerView.setAdapter(adapter);
 		recyclerView.setHasFixedSize(true);
