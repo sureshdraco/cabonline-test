@@ -4,8 +4,13 @@ package cabonline.se.test.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -19,7 +24,7 @@ import io.realm.RealmObject;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TripDetailFragment extends Fragment {
+public class TripDetailFragment extends Fragment implements SearchView.OnQueryTextListener {
 
 
 	private static final String TAG = TripDetailFragment.class.getSimpleName();
@@ -46,7 +51,6 @@ public class TripDetailFragment extends Fragment {
 			queryUser();
 		}
 	};
-
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -113,5 +117,15 @@ public class TripDetailFragment extends Fragment {
 		RealmObject.removeChangeListener(trip, tripChangeListener);
 		realm.removeChangeListener(realmChangeListener);
 		realm.close();
+	}
+
+	@Override
+	public boolean onQueryTextSubmit(String query) {
+		return false;
+	}
+
+	@Override
+	public boolean onQueryTextChange(String newText) {
+		return false;
 	}
 }

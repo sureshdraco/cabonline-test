@@ -21,20 +21,27 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import cabonline.se.test.R;
 import cabonline.se.test.activity.TripDetailActivity;
 import cabonline.se.test.fragment.TripDetailFragment;
 import cabonline.se.test.model.Trip;
+import io.realm.Case;
 import io.realm.OrderedRealmCollection;
+import io.realm.Realm;
 import io.realm.RealmRecyclerViewAdapter;
 
-public class TripsRecyclerViewAdapter extends RealmRecyclerViewAdapter<Trip, TripsRecyclerViewAdapter.MyViewHolder> {
+public class TripsRecyclerViewAdapter extends RealmRecyclerViewAdapter<Trip, TripsRecyclerViewAdapter.MyViewHolder> implements Filterable {
+
+	private final Realm realm;
 
 	public TripsRecyclerViewAdapter(OrderedRealmCollection<Trip> data) {
 		super(data, true);
 		setHasStableIds(true);
+		realm = Realm.getDefaultInstance();
 	}
 
 	@Override
@@ -57,6 +64,42 @@ public class TripsRecyclerViewAdapter extends RealmRecyclerViewAdapter<Trip, Tri
 	public long getItemId(int index) {
 		//noinspection ConstantConditions
 		return getItem(index).getId();
+	}
+
+	@Override
+	public Filter getFilter() {
+		return new MyNamesFilter(this);
+	}
+
+	private class MyNamesFilter
+			extends Filter {
+		private final TripsRecyclerViewAdapter adapter;
+
+		private MyNamesFilter(TripsRecyclerViewAdapter adapter) {
+			super();
+			this.adapter = adapter;
+		}
+
+		@Override
+		protected FilterResults performFiltering(CharSequence constraint) {
+			return new FilterResults();
+		}
+
+		@Override
+		protected void publishResults(CharSequence constraint, FilterResults results) {
+			adapter.filterResults(constraint.toString());
+		}
+	}
+
+	private void filterResults(String text) {
+		text = text == null ? null : text.toLowerCase().trim();
+		if (text == null || "".equals(text)) {
+			updateData(realm.where(Trip.class).findAllAsync());
+		} else {
+			updateData(realm.where(Trip.class)
+					.contains("destination", text, Case.INSENSITIVE)
+					.findAllAsync());
+		}
 	}
 
 	class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
