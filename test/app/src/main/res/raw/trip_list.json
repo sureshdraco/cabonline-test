@@ -1,6 +1,7 @@
 [
   {
     "id": 1,
+    "km": 76,
     "price": "100",
     "destination": "stockholm",
     "paymentType": "card",
@@ -8,34 +9,39 @@
   },
   {
     "id": 2,
+    "km": 66,
     "destination": "Sweden",
     "paymentType": "cash",
-    "price": "1000",
+    "price": "2",
     "time": "2016-08-22T18:18:28+01:00"
   },
   {
     "id": 3,
+    "km": 45,
     "destination": "Norway",
     "paymentType": "card",
-    "price": "10",
+    "price": "3",
     "time": "2016-11-02T10:52:28+01:00"
   },
   {
     "id": 4,
-    "price": "100",
+    "km": 23,
+    "price": "2",
     "destination": "Göteborg",
     "paymentType": "card",
     "time": "2016-03-01T22:02:28+01:00"
   },
   {
     "id": 5,
+    "km": 222,
     "destination": "Denmark",
     "paymentType": "cash",
-    "price": "1000",
+    "price": "1",
     "time": "2016-08-22T18:18:28+01:00"
   },
   {
     "id": 6,
+    "km": 22,
     "destination": "Holland",
     "paymentType": "card",
     "price": "10",
@@ -43,6 +49,7 @@
   },
   {
     "id": 7,
+    "km": 292,
     "destination": "Amsterdam",
     "paymentType": "card",
     "price": "10",
@@ -50,6 +57,7 @@
   },
   {
     "id": 8,
+    "km": 19,
     "price": "100",
     "destination": "Oslo",
     "paymentType": "card",
@@ -57,12 +65,14 @@
   },
   {
     "id": 9,
+    "km": 23,
     "destination": "Helsingborg",
     "paymentType": "cash",
-    "price": "1000",
+    "price": "3",
     "time": "2016-08-22T18:18:28+01:00"
   },
   {
+    "km": 290,
     "id": 10,
     "destination": "Blekinge",
     "paymentType": "card",

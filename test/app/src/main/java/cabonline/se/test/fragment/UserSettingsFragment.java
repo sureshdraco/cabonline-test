@@ -1,7 +1,6 @@
 package cabonline.se.test.fragment;
 
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,6 +17,7 @@ import cabonline.se.test.R;
 import cabonline.se.test.model.User;
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
+import io.realm.RealmObject;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,19 +42,16 @@ public class UserSettingsFragment extends Fragment {
 		return inflater.inflate(R.layout.fragment_user_profile, container, false);
 	}
 
-	private final RealmChangeListener<User> realmListener = new RealmChangeListener<User>() {
-		@Override
-		public void onChange(User user) {
-			Log.d(TAG, "user change came");
-			setupData();
-		}
+	private final RealmChangeListener<User> realmListener = user -> {
+		Log.d(TAG, "user change came");
+		setupData();
 	};
 
 	private final RealmChangeListener<Realm> listener = new RealmChangeListener<Realm>() {
 		@Override
 		public void onChange(Realm realm) {
 			Log.d(TAG, "realm change came");
-			user.removeAllChangeListeners();
+			RealmObject.removeAllChangeListeners(user);
 			queryUser();
 		}
 	};
@@ -67,54 +64,36 @@ public class UserSettingsFragment extends Fragment {
 	}
 
 	private void setupView(View view) {
-		view.findViewById(R.id.emailRow).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				final EditText input = new EditText(getContext());
-				input.setText(user != null && user.isValid() ? user.getEmail() : "");
-				showAlertDialog("Email", input, new Runnable() {
-					@Override
-					public void run() {
-						String email = input.getText().toString();
-						realm.beginTransaction();
-						user.setEmail(email);
-						realm.commitTransaction();
-					}
-				});
-			}
+		view.findViewById(R.id.emailRow).setOnClickListener(view1 -> {
+			final EditText input = new EditText(getContext());
+			input.setText(user != null && RealmObject.isValid(user) ? user.getEmail() : "");
+			showAlertDialog("Email", input, () -> {
+				String email = input.getText().toString();
+				realm.beginTransaction();
+				user.setEmail(email);
+				realm.commitTransaction();
+			});
 		});
 
-		view.findViewById(R.id.nameRow).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				final EditText input = new EditText(getContext());
-				input.setText(user != null && user.isValid() ? user.getName() : "");
-				showAlertDialog("Name", input, new Runnable() {
-					@Override
-					public void run() {
-						String name = input.getText().toString();
-						realm.beginTransaction();
-						user.setName(name);
-						realm.commitTransaction();
-					}
-				});
-			}
+		view.findViewById(R.id.nameRow).setOnClickListener(view12 -> {
+			final EditText input = new EditText(getContext());
+			input.setText(user != null && RealmObject.isValid(user) ? user.getName() : "");
+			showAlertDialog("Name", input, () -> {
+				String name = input.getText().toString();
+				realm.beginTransaction();
+				user.setName(name);
+				realm.commitTransaction();
+			});
 		});
-		view.findViewById(R.id.phoneRow).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				final EditText input = new EditText(getContext());
-				input.setText(user != null && user.isValid() ? user.getPhone() : "");
-				showAlertDialog("Phone", input, new Runnable() {
-					@Override
-					public void run() {
-						String phone = input.getText().toString();
-						realm.beginTransaction();
-						user.setPhone(phone);
-						realm.commitTransaction();
-					}
-				});
-			}
+		view.findViewById(R.id.phoneRow).setOnClickListener(view13 -> {
+			final EditText input = new EditText(getContext());
+			input.setText(user != null && RealmObject.isValid(user) ? user.getPhone() : "");
+			showAlertDialog("Phone", input, () -> {
+				String phone = input.getText().toString();
+				realm.beginTransaction();
+				user.setPhone(phone);
+				realm.commitTransaction();
+			});
 		});
 	}
 
@@ -129,18 +108,10 @@ public class UserSettingsFragment extends Fragment {
 		alertDialog.setView(editText);
 
 		alertDialog.setPositiveButton("Update",
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
-						onUpdate.run();
-					}
-				});
+				(dialog, which) -> onUpdate.run());
 
 		alertDialog.setNegativeButton("Cancel",
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.cancel();
-					}
-				});
+				(dialog, which) -> dialog.cancel());
 
 		alertDialog.show();
 	}
@@ -161,12 +132,12 @@ public class UserSettingsFragment extends Fragment {
 
 	private void queryUser() {
 		user = realm.where(User.class).findFirstAsync();
-		user.addChangeListener(realmListener);
+		RealmObject.addChangeListener(user, realmListener);
 	}
 
 	private void setupData() {
 		Log.d(TAG, "setup data");
-		if (user != null && user.isValid()) {
+		if (user != null && RealmObject.isValid(user)) {
 			name.setText(user.getName());
 			phone.setText(user.getPhone());
 			email.setText(user.getEmail());
@@ -180,7 +151,7 @@ public class UserSettingsFragment extends Fragment {
 	@Override
 	public void onStop() {
 		super.onStop();
-		user.removeChangeListener(realmListener);
+		RealmObject.removeChangeListener(user, realmListener);
 		realm.removeChangeListener(listener);
 		realm.close();
 	}

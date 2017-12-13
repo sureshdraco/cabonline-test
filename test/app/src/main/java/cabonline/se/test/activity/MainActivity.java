@@ -11,12 +11,13 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 
 import cabonline.se.test.R;
+import cabonline.se.test.fragment.CarListFragment;
 import cabonline.se.test.fragment.TripListFragment;
 import cabonline.se.test.fragment.UserSettingsFragment;
+import cabonline.se.test.model.Car;
 import cabonline.se.test.model.Trip;
 import cabonline.se.test.model.User;
 import cabonline.se.test.service.LoadJsonFilesIntentService;
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity
 		implements NavigationView.OnNavigationItemSelectedListener {
 	public static final int FRAGMENT_TRIPS = 0;
 	public static final int FRAGMENT_SETTINGS = 1;
+	public static final int FRAGMENT_CARS = 2;
 
 	private int currentFragment;
 
@@ -47,27 +49,27 @@ public class MainActivity extends AppCompatActivity
 
 	private void initView() {
 		final Toolbar toolbar = findViewById(R.id.toolbar);
-		toolbar.findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				Realm realm = Realm.getDefaultInstance();
-				realm.beginTransaction();
-				switch (currentFragment) {
-					case FRAGMENT_SETTINGS:
-						realm.delete(User.class);
-						break;
-					case FRAGMENT_TRIPS:
-					default:
-						realm.delete(Trip.class);
-						break;
-				}
-				realm.commitTransaction();
-				realm.close();
+		toolbar.findViewById(R.id.delete).setOnClickListener(view -> {
+			Realm realm = Realm.getDefaultInstance();
+			realm.beginTransaction();
+			switch (currentFragment) {
+				case FRAGMENT_SETTINGS:
+					realm.delete(User.class);
+					break;
+				case FRAGMENT_CARS:
+					realm.delete(Car.class);
+					break;
+				case FRAGMENT_TRIPS:
+				default:
+					realm.delete(Trip.class);
+					break;
 			}
+			realm.commitTransaction();
+			realm.close();
 		});
 		setSupportActionBar(toolbar);
 		setupNavigationDrawer(toolbar);
-		showFragment(FRAGMENT_SETTINGS);
+		showFragment(FRAGMENT_TRIPS);
 	}
 
 	private void setupNavigationDrawer(Toolbar toolbar) {
@@ -78,6 +80,7 @@ public class MainActivity extends AppCompatActivity
 		toggle.syncState();
 		NavigationView navigationView = findViewById(R.id.nav_view);
 		navigationView.setNavigationItemSelectedListener(this);
+		navigationView.setCheckedItem(R.id.trips);
 	}
 
 	@Override
@@ -99,6 +102,8 @@ public class MainActivity extends AppCompatActivity
 			showFragment(FRAGMENT_SETTINGS);
 		} else if (id == R.id.trips) {
 			showFragment(FRAGMENT_TRIPS);
+		} else if (id == R.id.cars) {
+			showFragment(FRAGMENT_CARS);
 		}
 		DrawerLayout drawer = findViewById(R.id.drawer_layout);
 		drawer.closeDrawer(GravityCompat.START);
@@ -111,6 +116,10 @@ public class MainActivity extends AppCompatActivity
 		Bundle bundle = new Bundle();
 		Fragment fragment;
 		switch (fragmentNo) {
+			case FRAGMENT_CARS:
+				fragment = new CarListFragment();
+				((TextView) findViewById(R.id.title)).setText("Cars");
+				break;
 			case FRAGMENT_SETTINGS:
 				fragment = new UserSettingsFragment();
 				((TextView) findViewById(R.id.title)).setText("Profile");

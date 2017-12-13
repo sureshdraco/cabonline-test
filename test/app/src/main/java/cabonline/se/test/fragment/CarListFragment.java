@@ -12,29 +12,29 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import cabonline.se.test.R;
-import cabonline.se.test.adapter.TripsRecyclerViewAdapter;
-import cabonline.se.test.model.Trip;
+import cabonline.se.test.adapter.CarsRecyclerViewAdapter;
+import cabonline.se.test.model.Car;
 import io.realm.Realm;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TripListFragment extends Fragment {
+public class CarListFragment extends Fragment {
 
 	private RecyclerView recyclerView;
 	private Realm realm;
-	private TripsRecyclerViewAdapter adapter;
+	private CarsRecyclerViewAdapter adapter;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.fragment_trips, container, false);
+		return inflater.inflate(R.layout.fragment_cars, container, false);
 	}
 
 	@Override
 	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		recyclerView = view.findViewById(R.id.tripRecyclerView);
+		recyclerView = view.findViewById(R.id.carRecyclerView);
 	}
 
 	@Override
@@ -53,7 +53,7 @@ public class TripListFragment extends Fragment {
 
 	private void setUpRecyclerView() {
 		// find all always returns a list, so no need for null check
-		adapter = new TripsRecyclerViewAdapter(realm.where(Trip.class).findAllAsync());
+		adapter = new CarsRecyclerViewAdapter(realm.where(Car.class).findAllAsync());
 		recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 		recyclerView.setAdapter(adapter);
 		recyclerView.setHasFixedSize(true);

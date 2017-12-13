@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "name": "renault",
+    "transmission": "manual",
+    "noOfSeats": 2
+  },
+  {
+    "id": 2,
+    "name": "mazda",
+    "transmission": "auto",
+    "noOfSeats": 3
+  },
+  {
+    "id": 3,
+    "name": "audi",
+    "transmission": "manual",
+    "noOfSeats": 5
+  }
+]

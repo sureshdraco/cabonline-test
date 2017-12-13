@@ -15,11 +15,13 @@
  */
 package cabonline.se.test.model;
 
-import io.realm.RealmObject;
+import io.realm.RealmModel;
+import io.realm.annotations.RealmClass;
 
-public class User extends RealmObject {
+@RealmClass
+public class User implements RealmModel {
 	private String name, phone, email, country;
-	
+
 	public User() {
 	}
 
@@ -49,26 +51,26 @@ public class User extends RealmObject {
 	public String getName() {
 		return name;
 	}
-	
+
 	public String getPhone() {
 		return phone;
 	}
-	
+
 	public String getEmail() {
 		return email;
 	}
-	
+
 	public String getCountry() {
 		return country;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "User{" +
-			"name='" + name + '\'' +
-			", phone='" + phone + '\'' +
-			", email='" + email + '\'' +
-			", country='" + country + '\'' +
-			'}';
+				"name='" + name + '\'' +
+				", phone='" + phone + '\'' +
+				", email='" + email + '\'' +
+				", country='" + country + '\'' +
+				'}';
 	}
 }

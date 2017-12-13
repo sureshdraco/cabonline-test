@@ -7,6 +7,6 @@ import cabonline.se.test.BuildConfig;
  */
 
 public class Constant {
-	
+
 	public static boolean DEBUG = BuildConfig.DEBUG;
 }

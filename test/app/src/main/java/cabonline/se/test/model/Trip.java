@@ -23,12 +23,13 @@ import io.realm.annotations.PrimaryKey;
 public class Trip extends RealmObject {
 	@PrimaryKey
 	private int id;
+	private int km;
 	private String price, paymentType, destination;
 	private Date time;
-	
+
 	public Trip() {
 	}
-	
+
 	public Trip(int id, String price, String paymentType, String destination, Date time) {
 		this.id = id;
 		this.price = price;
@@ -36,27 +37,31 @@ public class Trip extends RealmObject {
 		this.destination = destination;
 		this.time = time;
 	}
-	
+
+	public int getKm() {
+		return km;
+	}
+
 	public int getId() {
 		return id;
 	}
-	
+
 	public Date getTime() {
 		return time;
 	}
-	
+
 	public String getDisplayTime() {
 		return time == null ? "" : time.toString();
 	}
-	
+
 	public String getPrice() {
 		return price;
 	}
-	
+
 	public String getPaymentType() {
 		return paymentType;
 	}
-	
+
 	public String getDestination() {
 		return destination;
 	}

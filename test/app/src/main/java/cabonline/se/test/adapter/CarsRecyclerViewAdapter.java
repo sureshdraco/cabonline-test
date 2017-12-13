@@ -16,7 +16,6 @@
 
 package cabonline.se.test.adapter;
 
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,15 +23,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import cabonline.se.test.R;
-import cabonline.se.test.activity.TripDetailActivity;
-import cabonline.se.test.fragment.TripDetailFragment;
-import cabonline.se.test.model.Trip;
+import cabonline.se.test.model.Car;
 import io.realm.OrderedRealmCollection;
 import io.realm.RealmRecyclerViewAdapter;
 
-public class TripsRecyclerViewAdapter extends RealmRecyclerViewAdapter<Trip, TripsRecyclerViewAdapter.MyViewHolder> {
+public class CarsRecyclerViewAdapter extends RealmRecyclerViewAdapter<Car, CarsRecyclerViewAdapter.MyViewHolder> {
 
-	public TripsRecyclerViewAdapter(OrderedRealmCollection<Trip> data) {
+	public CarsRecyclerViewAdapter(OrderedRealmCollection<Car> data) {
 		super(data, true);
 		setHasStableIds(true);
 	}
@@ -40,17 +37,17 @@ public class TripsRecyclerViewAdapter extends RealmRecyclerViewAdapter<Trip, Tri
 	@Override
 	public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 		View itemView = LayoutInflater.from(parent.getContext())
-				.inflate(R.layout.trip_row, parent, false);
+				.inflate(R.layout.car_row, parent, false);
 		return new MyViewHolder(itemView);
 	}
 
 	@Override
 	public void onBindViewHolder(MyViewHolder holder, int position) {
-		final Trip trip = getItem(position);
-		holder.data = trip;
-		holder.destination.setText(trip.getDestination());
-		holder.price.setText(trip.getPrice());
-		holder.time.setText(trip.getDisplayTime());
+		final Car car = getItem(position);
+		holder.data = car;
+		holder.carName.setText(car.getName());
+		holder.noOfSeats.setText(String.valueOf(car.getNoOfSeats()));
+		holder.transmission.setText(car.getTransmission());
 	}
 
 	@Override
@@ -59,23 +56,15 @@ public class TripsRecyclerViewAdapter extends RealmRecyclerViewAdapter<Trip, Tri
 		return getItem(index).getId();
 	}
 
-	class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-		TextView destination, price, time;
-		Trip data;
+	class MyViewHolder extends RecyclerView.ViewHolder {
+		TextView carName, noOfSeats, transmission;
+		Car data;
 
 		MyViewHolder(View view) {
 			super(view);
-			destination = view.findViewById(R.id.destination);
-			time = view.findViewById(R.id.tripTime);
-			price = view.findViewById(R.id.price);
-			view.setOnClickListener(this);
-		}
-
-		@Override
-		public void onClick(View view) {
-			Intent intent = new Intent(view.getContext(), TripDetailActivity.class);
-			intent.putExtra(TripDetailFragment.EXTRA_TRIP, data.getId());
-			view.getContext().startActivity(intent);
+			carName = view.findViewById(R.id.carName);
+			transmission = view.findViewById(R.id.transmission);
+			noOfSeats = view.findViewById(R.id.noOfSeats);
 		}
 	}
 }
