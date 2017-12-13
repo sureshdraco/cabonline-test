@@ -35,18 +35,13 @@ public class CarListFragment extends Fragment {
 	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		recyclerView = view.findViewById(R.id.carRecyclerView);
-	}
-
-	@Override
-	public void onStart() {
-		super.onStart();
 		realm = Realm.getDefaultInstance();
 		setUpRecyclerView();
 	}
 
 	@Override
-	public void onStop() {
-		super.onStop();
+	public void onDestroy() {
+		super.onDestroy();
 		recyclerView.setAdapter(null);
 		realm.close();
 	}
