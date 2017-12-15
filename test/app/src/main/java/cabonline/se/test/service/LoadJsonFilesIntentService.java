@@ -25,7 +25,7 @@ public class LoadJsonFilesIntentService extends IntentService {
 	@Override
 	protected void onHandleIntent(Intent intent) {
 		try {
-			sleep(2000);
+			sleep(3000);
 		} catch (InterruptedException e) {
 		}
 		Realm realm = Realm.getDefaultInstance();

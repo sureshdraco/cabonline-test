@@ -25,6 +25,8 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
+
 import cabonline.se.test.R;
 import cabonline.se.test.activity.TripDetailActivity;
 import cabonline.se.test.fragment.TripDetailFragment;
@@ -37,9 +39,11 @@ import io.realm.RealmRecyclerViewAdapter;
 public class TripsRecyclerViewAdapter extends RealmRecyclerViewAdapter<Trip, TripsRecyclerViewAdapter.MyViewHolder> implements Filterable {
 
 	private final Realm realm;
+	private final LottieAnimationView loaderView;
 
-	public TripsRecyclerViewAdapter(OrderedRealmCollection<Trip> data) {
+	public TripsRecyclerViewAdapter(LottieAnimationView loaderView, OrderedRealmCollection<Trip> data) {
 		super(data, true);
+		this.loaderView = loaderView;
 		setHasStableIds(true);
 		realm = Realm.getDefaultInstance();
 	}
@@ -48,6 +52,7 @@ public class TripsRecyclerViewAdapter extends RealmRecyclerViewAdapter<Trip, Tri
 	public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 		View itemView = LayoutInflater.from(parent.getContext())
 				.inflate(R.layout.trip_row, parent, false);
+		handleLoaderView();
 		return new MyViewHolder(itemView);
 	}
 
@@ -58,6 +63,13 @@ public class TripsRecyclerViewAdapter extends RealmRecyclerViewAdapter<Trip, Tri
 		holder.destination.setText(trip.getDestination());
 		holder.price.setText(trip.getPrice());
 		holder.time.setText(trip.getDisplayTime());
+	}
+
+	private void handleLoaderView() {
+		if (loaderView.getVisibility() == View.VISIBLE) {
+			loaderView.cancelAnimation();
+			loaderView.setVisibility(View.GONE);
+		}
 	}
 
 	@Override
