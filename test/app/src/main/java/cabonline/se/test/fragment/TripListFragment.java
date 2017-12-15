@@ -9,7 +9,6 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,8 +22,6 @@ import cabonline.se.test.R;
 import cabonline.se.test.adapter.TripsRecyclerViewAdapter;
 import cabonline.se.test.model.Trip;
 import io.realm.Realm;
-import io.realm.RealmChangeListener;
-import io.realm.RealmResults;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,7 +46,6 @@ public class TripListFragment extends Fragment implements SearchView.OnQueryText
 		loaderView = view.findViewById(R.id.loaderView);
 		realm = Realm.getDefaultInstance();
 		setUpRecyclerView();
-		loaderView.playAnimation();
 	}
 
 	@Override
@@ -76,17 +72,8 @@ public class TripListFragment extends Fragment implements SearchView.OnQueryText
 	}
 
 	private void setUpRecyclerView() {
-		RealmResults<Trip> realmResults = realm.where(Trip.class).findAllAsync();
-		realmResults.addChangeListener(new RealmChangeListener<RealmResults<Trip>>() {
-
-			@Override
-			public void onChange(RealmResults<Trip> trips) {
-				if (trips.isValid())
-					Log.d("Change", "change");
-			}
-		});
 		// find all always returns a list, so no need for null check
-		adapter = new TripsRecyclerViewAdapter(loaderView, realmResults);
+		adapter = new TripsRecyclerViewAdapter(loaderView, realm.where(Trip.class).findAllAsync());
 		recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 		recyclerView.setAdapter(adapter);
 		recyclerView.setHasFixedSize(true);

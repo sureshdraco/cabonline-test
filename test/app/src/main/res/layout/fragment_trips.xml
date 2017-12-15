@@ -18,6 +18,8 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_centerInParent="true"
+		app:lottie_autoPlay="true"
 		app:lottie_fileName="anime/loader.json"
-		app:lottie_loop="true"/>
+		app:lottie_loop="true"
+		/>
 </RelativeLayout>
