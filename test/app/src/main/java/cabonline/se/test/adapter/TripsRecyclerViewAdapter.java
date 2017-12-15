@@ -39,7 +39,7 @@ import io.realm.RealmRecyclerViewAdapter;
 public class TripsRecyclerViewAdapter extends RealmRecyclerViewAdapter<Trip, TripsRecyclerViewAdapter.MyViewHolder> implements Filterable {
 
 	private final Realm realm;
-	private final LottieAnimationView loaderView;
+	private LottieAnimationView loaderView;
 
 	public TripsRecyclerViewAdapter(LottieAnimationView loaderView, OrderedRealmCollection<Trip> data) {
 		super(data, true);
@@ -52,7 +52,6 @@ public class TripsRecyclerViewAdapter extends RealmRecyclerViewAdapter<Trip, Tri
 	public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 		View itemView = LayoutInflater.from(parent.getContext())
 				.inflate(R.layout.trip_row, parent, false);
-		handleLoaderView();
 		return new MyViewHolder(itemView);
 	}
 
@@ -105,11 +104,12 @@ public class TripsRecyclerViewAdapter extends RealmRecyclerViewAdapter<Trip, Tri
 
 	private void filterResults(String text) {
 		text = text == null ? null : text.toLowerCase().trim();
+		handleLoaderView();
 		if (text == null || "".equals(text)) {
 			updateData(realm.where(Trip.class).findAllAsync());
 		} else {
 			updateData(realm.where(Trip.class)
-					.contains("destination", text, Case.INSENSITIVE)
+					.contains(Trip.DESTINATION, text, Case.INSENSITIVE)
 					.findAllAsync());
 		}
 	}

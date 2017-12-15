@@ -21,6 +21,9 @@ import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 public class Trip extends RealmObject {
+
+	public static final String DESTINATION = "destination";
+
 	@PrimaryKey
 	private int id;
 	private int km;

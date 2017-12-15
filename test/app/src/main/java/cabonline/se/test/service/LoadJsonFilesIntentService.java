@@ -13,8 +13,6 @@ import cabonline.se.test.model.User;
 import cabonline.se.test.util.Constant;
 import io.realm.Realm;
 
-import static java.lang.Thread.sleep;
-
 public class LoadJsonFilesIntentService extends IntentService {
 	private static final String TAG = LoadJsonFilesIntentService.class.getSimpleName();
 
@@ -24,10 +22,6 @@ public class LoadJsonFilesIntentService extends IntentService {
 
 	@Override
 	protected void onHandleIntent(Intent intent) {
-		try {
-			sleep(3000);
-		} catch (InterruptedException e) {
-		}
 		Realm realm = Realm.getDefaultInstance();
 		try {
 			InputStream tripIs = getResources().openRawResource(R.raw.trip_list);

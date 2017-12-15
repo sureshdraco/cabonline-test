@@ -21,6 +21,7 @@ import cabonline.se.test.model.Car;
 import cabonline.se.test.model.Trip;
 import cabonline.se.test.model.User;
 import cabonline.se.test.service.LoadJsonFilesIntentService;
+import cabonline.se.test.util.PreferenceUtil;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
@@ -37,7 +38,10 @@ public class MainActivity extends AppCompatActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		initRealm();
-		startService(new Intent(getApplicationContext(), LoadJsonFilesIntentService.class));
+		if (PreferenceUtil.isFirstTimeLaunch(getApplicationContext())) {
+			startService(new Intent(getApplicationContext(), LoadJsonFilesIntentService.class));
+			PreferenceUtil.setFirstTimeLaunch(getApplicationContext(), false);
+		}
 		initView();
 	}
 

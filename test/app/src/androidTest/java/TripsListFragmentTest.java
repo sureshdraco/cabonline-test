@@ -14,6 +14,7 @@ import util.RecyclerViewMatcher;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.pressImeActionButton;
 import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
@@ -35,7 +36,7 @@ public class TripsListFragmentTest {
 		onView(withId(R.id.nav_view)).perform(NavigationViewActions.navigateTo(R.id.trips));
 		tripRecycleView = withRecyclerView(R.id.tripRecyclerView);
 		try {
-			Thread.sleep(3500);
+			Thread.sleep(2500);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -61,6 +62,12 @@ public class TripsListFragmentTest {
 	public void verifySearch() {
 		onView(withId(R.id.action_search)).perform(click());
 		onView(withId(R.id.search_src_text)).perform(typeText("ams"));
+		onView(withId(R.id.search_src_text)).perform(pressImeActionButton());
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		onView(tripRecycleView.atPosition(0)).check(matches(hasDescendant(withText("Amsterdam"))));
 		onView(withId(R.id.search_close_btn)).perform(click());
 		onView(tripRecycleView.atPosition(0)).check(matches(hasDescendant(withText("stockholm"))));

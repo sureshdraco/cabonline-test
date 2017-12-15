@@ -2,6 +2,7 @@ package cabonline.se.test.fragment;
 
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
@@ -9,6 +10,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -66,7 +68,9 @@ public class TripListFragment extends Fragment implements SearchView.OnQueryText
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		loaderView.cancelAnimation();
+		if (loaderView.isAnimating()) {
+			loaderView.cancelAnimation();
+		}
 		recyclerView.setAdapter(null);
 		realm.close();
 	}
@@ -82,12 +86,17 @@ public class TripListFragment extends Fragment implements SearchView.OnQueryText
 
 	@Override
 	public boolean onQueryTextSubmit(String query) {
+		loaderView.setVisibility(View.VISIBLE);
+		loaderView.playAnimation();
+		new Handler().postDelayed(() -> adapter.getFilter().filter(query), 2000);
 		return false;
 	}
 
 	@Override
 	public boolean onQueryTextChange(String newText) {
-		adapter.getFilter().filter(newText);
+		if (TextUtils.isEmpty(newText)) {
+			adapter.getFilter().filter("");
+		}
 		return false;
 	}
 }
