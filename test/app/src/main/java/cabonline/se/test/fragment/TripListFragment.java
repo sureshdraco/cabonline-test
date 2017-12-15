@@ -82,12 +82,12 @@ public class TripListFragment extends Fragment implements SearchView.OnQueryText
 
 	@Override
 	public boolean onQueryTextSubmit(String query) {
-		adapter.getFilter().filter(query);
 		return false;
 	}
 
 	@Override
 	public boolean onQueryTextChange(String newText) {
+		adapter.getFilter().filter(newText);
 		return false;
 	}
 }
